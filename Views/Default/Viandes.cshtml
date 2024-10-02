@@ -1,0 +1,155 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Laitiers</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            width: 100%; /* Définit la largeur du body sur 100% de la largeur de la fenêtre */
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+            margin-top: 20px; /* Ajout de marge en haut pour l'espace visuel */
+        }
+
+        .card {
+            margin-bottom: 20px;
+            border: none; /* Suppression de la bordure par défaut */
+        }
+
+            .card img {
+                max-width: 100px;
+                margin: auto;
+                display: block;
+            }
+
+        /* Style pour le marquee */
+        marquee {
+            color: red; /* Couleur rouge */
+            font-size: 50px; /* Taille de police */
+            padding: 10px; /* Espacement interne */
+            width: 100%; /* Largeur de 100% pour occuper toute la largeur du conteneur */
+        }
+
+        /* Style pour le menu */
+        .menu {
+            list-style-type: none;
+            padding: 0;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+            .menu li {
+                display: inline;
+                margin-right: 10px;
+            }
+
+                .menu li button {
+                    background-color: #007bff;
+                    color: #fff;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+
+                    .menu li button:hover {
+                        background-color: #0056b3;
+                    }
+
+        /* Style pour le bouton de retour */
+        .btn-retour {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    @{
+
+        if (ViewBag.msgepi == null)
+        {
+            ViewBag.msgepi = new List<projetEpicerie.Models.viandes>();
+        }
+
+    }
+    <div class="container">
+        <ul class="menu">
+            <li><button onclick="window.location.href = '@Url.Action("Laitiers")?Langue=EN'">EN</button></li>
+            <li><button onclick="window.location.href = '@Url.Action("Laitiers")?Langue=FR'">FR</button></li>
+            <li>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="@Url.Action("Index", "./produitpaniers", new { Langue = ViewBag.Langue })" class="btn btn-secondary rounded-pill  justify-content-md-end">
+                      panier
+                    </a>
+                </div>
+            </li>
+        </ul>
+
+
+        <form method="post" action="/Default/Viandes">
+            <marquee behavior="scroll" direction="left" scrollamount="5">Bienvenue dans le rayon des produits laitiers</marquee>
+            <h2>Liste des produits viandes</h2>
+
+            <div class="row">
+                @foreach (var epi in ViewBag.msgepi)
+                {
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card">
+                            <img src="@epi.image" class="card-img-top" alt="Produit">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    @foreach (var langue in epi.Langue)
+                                    {
+                                        if (langue.symbol == ViewBag.langue)
+                                        {
+                                            @langue.name
+                                        }
+                                    }
+                                </h5>
+                                <p class="card-text">
+                                    @foreach (var langue in epi.Langue)
+                                    {
+                                        if (langue.symbol == ViewBag.langue)
+                                        {
+                                            @langue.description
+                                        }
+                                    }
+                                </p>
+                                <p class="card-text">Prix: @epi.prix</p>
+                                <form method="post" action="@Url.Action("Ajouterpanier")">
+                                    <input type="hidden" name="id" value="@epi.id" /> <!-- Champ caché pour l'ID du produit -->
+                                    <input type="hidden" name="count" value="@ViewBag.compteur" /> <!-- Champ caché pour le count actuel du panier -->
+                                    <button type="submit">Ajouter au panier</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <a href="@Url.Action("Acceuil")" class="btn btn-secondary btn-retour">Retour</a>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+﻿@model IEnumerable<projetEpicerie.Models.produitpanier>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    /* Ajoutez vos styles CSS personnalisés ici */
+    .table th {
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .table td {
+        text-align: center;
+    }
+
+    .product-image {
+        max-width: 100px;
+        max-height: 100px;
+    }
+
+    /* Ajoutez d'autres styles selon vos besoins */
+</style>
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Prix</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@item.image" alt="Product Image" class="product-image img-thumbnail" />
+                </td>
+              
+                <td>@Html.DisplayFor(modelItem => item.prix)</td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.id }, new { @class = "btn btn-danger btn-sm" })
+                    <button onclick="displayPayPalButton(@item.prix)">Payer</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="https://www.paypal.com/sdk/js?client-id=Abb9jMAzLGmxPQO8JMLspihGWNbPvsHKb6VujqWxPCLOMVAUi7Z-nMPJXSks1eOALLKi3pcUcpfMsLG5&currency=CAD"></script>
+<script>
+    function displayPayPalButton(amount) {
+        document.getElementById('paypal-button-container').innerHTML = ''; // Vide le conteneur au cas où il y aurait déjà un bouton
+        paypal.Buttons({
+            style: {
+                color: 'blue'
+            },
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: amount // Utilisez la variable amount passée en paramètre
+                        }
+                    }]
+                });
+            },
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (details) {
+                    window.location.replace('@Url.Action("Success", "Default")');
+                });
+            }
+        }).render('#paypal-button-container'); // Rendu dans le conteneur 'paypal-button-container'
+    }
+</script>
+
+<!-- Conteneur pour le bouton PayPal -->
+<div id="paypal-button-container"></div>

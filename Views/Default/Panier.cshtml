@@ -1,0 +1,27 @@
+﻿
+@model List<projetEpicerie.Models.laitiers>
+
+<h2>Votre panier</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table>
+        <tr>
+            <th>Image</th>
+            <th>Nom</th>
+            <th>Prix</th>
+        </tr>
+        @foreach (var produit in Model)
+        {
+            <tr>
+                <td><img src="@produit.image" alt="Image du produit" width="100" /></td>
+                <td>@produit.nom</td>
+                <td>@produit.prix</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>Votre panier est vide.</p>
+}

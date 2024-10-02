@@ -1,0 +1,122 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        a {
+            display: block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+        .menu {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            background-color: #f2f2f2;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+            .menu li {
+                margin-right: 20px;
+            }
+
+                .menu li:last-child {
+                    margin-right: 0;
+                }
+
+            .menu a {
+                padding: 5px 10px;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+
+                .menu a:hover {
+                    background-color: #ddd;
+                }
+    </style>
+</head>
+<body>
+    @{
+        if (ViewBag.Langue == null)
+        {
+            ViewBag.Langue = "FR";
+        }
+        if (ViewBag.titre == null)
+        {
+            ViewBag.titre = 1;
+        }
+    }
+
+    <ul class="menu">
+        <li><a href="@Url.Action("Laitiers", new { Langue = ViewBag.Langue })">@ViewBag.laitier</a></li>
+        <li><a href="@Url.Action("Viandes", new { Langue = ViewBag.Langue })">@ViewBag.viande</a></li>
+        <li><a href="@Url.Action("Boulangerie", new { Langue = ViewBag.Langue })">@ViewBag.boulangerie</a></li>
+        <li><a href="@Url.Action("Fruits_et_Légumes", new { Langue = ViewBag.Langue })">@ViewBag.fruit_legume</a></li>
+        <li><a href="@Url.Action("Index", "./fruits_et_légumes")">@ViewBag.commande</a></li>
+        <li><a href="@Url.Action("Create", "./Langues")">@ViewBag.ajoutlang</a></li>
+        <li><a href="@Url.Action("Index", "./users")">@ViewBag.modifuser</a></li>
+        <li><a href="@Url.Action("translateAnglais", new { titre = ViewBag.titre })">EN</a></li>
+        <li><a href="@Url.Action("translateFrancais", new { titre = ViewBag.titre })">FR</a></li>
+    </ul>
+
+
+    <form method="post" action="/Default/Acceuil">
+        <div>
+            <h1 class="center">@ViewBag.p1</h1><br /><br />
+            <h2>@ViewBag.p2</h2>
+        </div>
+    </form>
+</body>
+</html>
